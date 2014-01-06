@@ -2,7 +2,7 @@
 <html lang="en" ng-app="pomodoro">
 <head>
   <meta charset="utf-8">
-  <title>Pomodoro Timer</title>
+  <title>roma pomodoro timer</title>
   <link rel="stylesheet" href="css/app.css"/>
   <!-- In production use:
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
@@ -16,14 +16,14 @@
   <script src="js/directives.js"></script>
 </head>
 <body>
+  <div class="tomato" >roma pomodoro timer</div>
+  <div>go for it!<span app-version></span></div>
+  <div> <span class="timer" countdown=1500000></span></div>
+  <div ng-view></div>
+
   <ul class="menu">
 	  <li><a href="#/pomodoro">pomodoro</a></li>
   </ul>
-  <div> <span countdown=1500000></span></div>
-
-  <div ng-view></div>
-
-  <div>Pomodoro<span app-version></span></div>
 
 </body>
 </html>
