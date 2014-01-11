@@ -2,8 +2,8 @@
 
 /* jasmine specs for controllers go here */
 
-describe('controllers', function(){
-  beforeEach(module('myApp.controllers'));
+/*describe('controllers', function(){
+  beforeEach(module('pomodoro.controllers'));
 
 
   it('should ....', inject(function() {
@@ -13,4 +13,4 @@ describe('controllers', function(){
   it('should ....', inject(function() {
     //spec body
   }));
-});
+});*/

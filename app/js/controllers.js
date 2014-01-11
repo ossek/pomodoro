@@ -14,13 +14,7 @@ pomodoroControllers.controller('pomodoroCtrl', ['$scope','$routeParams',
                           $scope.startPomodoro = function(){
 			    $scope.timeRemaining = 1500
 			    var end = new Date(Date.now() + TWENTY_FIVE_IN_MILLIS_EPOCH);
-                            //this needs to be async so that this function does not block?
-			    //also need to disable the button until it's finished
-			    /*while(Date.now() < end){
-			            $scope.timeRemaining = millisecondsToSeconds(end - Date.now());
-			            //TODO some sort of duplex connection to time server?
-			    }*/
-			  };
+               		  };
 
 			  $scope.reset = function(){
 				  $scope.timeRemaining = 0;
