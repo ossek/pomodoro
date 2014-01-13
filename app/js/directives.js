@@ -22,16 +22,19 @@ angular.module('pomodoro.directives', [])
 	    var timerMillis = attrs.countdown;
             var timeoutId;
 	    var elapsedMillis;
-            var REMAIN_FORMAT='EEEE MMM. d yyyy h:mm:ss';
 	    var remain;
             //var REMAIN_FORMAT='h:mm:ss';
 
 	    //update DOM / UI
 	    function setTimeRemaining(millis) {
-		    //element.text(dateFilter(date, REMAIN_FORMAT));
-		    remain= new Date(millis); 
-		    //element.text(millis + "|| " + new Date(millis) + "||" +  new Date(millis).toLocaleTimeString());
-		    element.text(remain.getUTCHours() + ":" + remain.getUTCMinutes() + ":" + remain.getUTCSeconds());
+		//this constructor is milliseconds with respect to UTC epoch start
+		// so showing its value with non-UTC methods will adjust for 
+		// browser's timezone (i think that's what's happening?)
+		    var remain= new Date(millis); 
+		    /*element.text(dateFilter(remain,'hh') + ":" + dateFilter(remain,'mm') + ":" + dateFilter(remain,'ss'));*/
+		    var utcString = remain.toUTCString();
+                    var outputString = utcString.slice(-12,utcString.length - 4);
+		    element.text(outputString);
 	    }
 
 	    function updateTimeRemaining() {
@@ -48,8 +51,7 @@ angular.module('pomodoro.directives', [])
 	    //from angular example
 	    //"updates the UI when a user changes the time formatting string our 
 	    //directive binds to."
-	    scope.$watch(attrs.countdown, function(/*value*/) {
-		    //format = value
+	    scope.$watch(attrs.countdown, function() {
 		    updateTimeRemaining();
 	    });
 
