@@ -12,9 +12,9 @@ input {
   background-color:#007500;
   border:1px solid;
   border-color:#B5FFB5;
-  -moz-border-radius:28px;
-  -webkit-border-radius:28px;
-  border-radius:28px;
+  -moz-border-radius:8px;
+  -webkit-border-radius:8px;
+  border-radius:8px;
   display:inline-block;
   padding: 5px 10px;
 

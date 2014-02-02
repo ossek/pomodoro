@@ -15,7 +15,7 @@ angular.module('pomodoro.directives', [])
 //is to deal with potential minification
 //see http://thegreenpizza.github.io/2013/05/25/building-minification-safe-angular.js-applications/
 //this directive based closely on the one at http://docs.angularjs.org/guide/directive
-  .directive('countdown', ['$interval','dateFilter', function($interval,dateFilter) {
+  .directive('countdown', ['$interval','dateFilter', 'countdown_service',function($interval,dateFilter,countdown_service) {
 
     function link(scope,element,attrs) {
 	    var startDate = Date.now();
@@ -23,18 +23,21 @@ angular.module('pomodoro.directives', [])
             var timeoutId;
 	    var elapsedMillis;
 	    var remain;
-            //var REMAIN_FORMAT='h:mm:ss';
 
-	    //update DOM / UI
-	    function setTimeRemaining(millis) {
+	    function getHourMinuteSecondRemainString(millis) {
 		//this constructor is milliseconds with respect to UTC epoch start
 		// so showing its value with non-UTC methods will adjust for 
 		// browser's timezone (i think that's what's happening?)
 		    var remain= new Date(millis); 
-		    /*element.text(dateFilter(remain,'hh') + ":" + dateFilter(remain,'mm') + ":" + dateFilter(remain,'ss'));*/
 		    var utcString = remain.toUTCString();
                     var outputString = utcString.slice(-12,utcString.length - 4);
-		    element.text(outputString);
+		    return outputString;
+	    }
+
+	    //update DOM / UI
+	    function setTimeRemaining(millis){
+		    var timeString = getHourMinuteSecondRemainString(millis);
+		    element.text(timeString);
 	    }
 
 	    function updateTimeRemaining() {
