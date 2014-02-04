@@ -2,12 +2,14 @@ module.exports = function(config){
     config.set({
     basePath : '../',
 
+    //files to load in the browser
     files : [
       'app/lib/angular/angular.js',
       'app/lib/angular/angular-*.js',
       'test/lib/angular/angular-mocks.js',
       'app/js/**/*.js',
-      'test/unit/**/*.js'
+      'test/unit/**/*.js',
+      'node_modules/sinon/pkg/sinon-timers-1.8.1.js'
     ],
 
     exclude : [

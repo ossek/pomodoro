@@ -30,20 +30,50 @@ describe('service', function() {
       }));
   });
 
-  describe('when start time was 576 and 231 seconds have passed', function() {
+  describe('when start time was 3000 milliseconds and 1000 seconds have passed', function() {
+      var startTime;
+      var elapse;
       beforeEach(function(){
-        jasmine.Clock.useMock();
+	this.clock = sinon.useFakeTimers();
+        startTime = 3000;
+        elapse = 1001;
       });
       
       it('elapsedMillis + timeRemainingMillis should == startime', 
-	  inject(function(countdownService) {
-	      var startTime = 576;
-	      countdownService.startTimer(startTime);
-              jasmine.Clock.tick(231);
-	      var elapsedMillis = countdownService.getElapsedMillis();
-	      var timeRemainingMillis = countdownService.getTimeRemainingMillis();
-        expect(elapsedMillis + timeRemainingMillis).toEqual(startTime);
+        inject(function($rootScope,$interval,countdownService) {
+            countdownService.startTimer(startTime);
+	    //these need to be applied together:
+	    //sinon advances date, $interval advances interval
+	    this.clock.tick(elapse);
+	    $interval.flush(elapse);
+            //jasmine clock does not mock Date
+            //see https://github.com/pivotal/jasmine/issues/361
+	    //the mock $interval service also does not affect Date
+            var elapsedMillis = countdownService.getElapsedMillis();
+            var timeRemainingMillis = countdownService.getTimeRemainingMillis();
+            expect(elapsedMillis + timeRemainingMillis).toEqual(startTime);
+            expect(elapsedMillis).toEqual(elapse);
       }));
+
+      it('elapsedMillis is the time elapsed', 
+        inject(function($rootScope,$interval,countdownService) {
+            countdownService.startTimer(startTime);
+	    //these need to be applied together:
+	    //sinon advances date, $interval advances interval
+	    this.clock.tick(elapse);
+	    $interval.flush(elapse);
+            //jasmine clock does not mock Date
+            //see https://github.com/pivotal/jasmine/issues/361
+	    //the mock $interval service also does not affect Date
+            var elapsedMillis = countdownService.getElapsedMillis();
+            expect(elapsedMillis).toEqual(elapse);
+      }));
+
+      afterEach(function(){
+        this.clock.restore();
+	startTime = 0;
+	elapse = 0;
+      });
   });
   //
   //test startTimer(<negative value>)

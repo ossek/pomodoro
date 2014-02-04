@@ -1,0 +1,72 @@
+some things that are done behind the scenes in angular:
+
+//New injector is created from the module. 
+//(This is usually done automatically by angular bootstrap)
+// given module 'myModule' created 
+// somewhere with angular.module('myModule'.....etc):
+var injector = angular.injector(['myModule', 'ng']);
+
+//asking for dependencies can be done manually from the 
+//injector, but is done through ANNOTATIONS so we 
+//don't have to pass the injector around
+Request any dependency from the injector
+var greeter = injector.get('greeter'); 
+
+
+<!-- Given this HTML -->
+<div ng-controller="MyController">
+  <button ng-click="sayHello()">Hello</button>
+</div>
+
+// And this controller definition
+function MyController($scope, greeter) {
+  $scope.sayHello = function() {
+    greeter.greet('Hello World');
+  };
+}
+ 
+// The 'ng-controller' directive does this behind the scenes
+injector.instantiate(MyController);
+
+ANNOTATIONS
+------------------------------------------------- 
+the injector can discover dependencies in these ways:
+------------------------------------------------- 
+1. parameter name inference.  breaks following minification.
+supposing here MyController depends on $scope,greeter.
+function MyController($scope, greeter) {
+  ...
+}
+------------------------------------------------- 
+2. $inject annotation. dependent on ordering of the array assigned.
+supposing here that MyController depends on $scope, greeter.
+var MyController = function(renamed$scope, renamedGreeter) {
+  ...
+}
+MyController['$inject'] = ['$scope', 'greeter'];
+------------------------------------------------- 
+3. inline annotation. supposing here that greeter 
+depends on $window.
+someModule.factory('greeter', ['$window', function(renamed$window) {
+  ...
+}]);
+or here, that MyController depends on $scope, dep1, dep2.
+someModule.controller('MyController', ['$scope', 'dep1', 'dep2', function($scope, dep1, dep2) {
+  ...
+  $scope.aMethod = function() {
+    ...
+  }
+  ...
+}]);
+------------------------------------------------- 
+
+and note that these are all considered factory methods,
+whose dependencies can be declared readily with the inline style:
+config
+factory
+directive
+filter
+run
+
+
+

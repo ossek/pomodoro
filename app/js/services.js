@@ -16,7 +16,7 @@ var services_module = angular.module('pomodoro.services',[]);
 //http://docs.angularjs.org/guide/module#module-loading-&-dependencies_configuration-blocks
 //services_module.value('countdown_service',
 
-services_module.factory('countdownService',['$interval',function(interval){
+services_module.factory('countdownService',['$interval','$log','$window',function(interval,renamedLog,renamedWindow){
     var _startDate;
     var _countdownFromMillis;
     var _timeoutId;
@@ -26,6 +26,7 @@ services_module.factory('countdownService',['$interval',function(interval){
     var _remain = 0;
     
     var startTimer = function(countdownFromMillis){
+	renamedWindow.console.log('starting a timer');
 	//TODO either clear all private data or make it
 	//so each service dependency is uniquely instantiated
 	_countdownFromMillis = countdownFromMillis;
@@ -37,6 +38,7 @@ services_module.factory('countdownService',['$interval',function(interval){
     };
 
     var updateTimeRemaining = function() {
+	renamedWindow.console.log('updating');
       _elapsedMillis = Date.now() - _startDate;
       if (_elapsedMillis >= _countdownFromMillis){
               interval.cancel(_timeoutId);
