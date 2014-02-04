@@ -16,7 +16,7 @@ var services_module = angular.module('pomodoro.services',[]);
 //http://docs.angularjs.org/guide/module#module-loading-&-dependencies_configuration-blocks
 //services_module.value('countdown_service',
 
-services_module.factory('countdownService',['$interval','$log','$window',function(interval,renamedLog,renamedWindow){
+services_module.factory('countdownService',['$interval',function(interval){
     var _startDate;
     var _countdownFromMillis;
     var _timeoutId;
@@ -26,7 +26,6 @@ services_module.factory('countdownService',['$interval','$log','$window',functio
     var _remain = 0;
     
     var startTimer = function(countdownFromMillis){
-	renamedWindow.console.log('starting a timer');
 	//TODO either clear all private data or make it
 	//so each service dependency is uniquely instantiated
 	_countdownFromMillis = countdownFromMillis;
@@ -38,7 +37,6 @@ services_module.factory('countdownService',['$interval','$log','$window',functio
     };
 
     var updateTimeRemaining = function() {
-	renamedWindow.console.log('updating');
       _elapsedMillis = Date.now() - _startDate;
       if (_elapsedMillis >= _countdownFromMillis){
               interval.cancel(_timeoutId);
@@ -67,23 +65,27 @@ services_module.factory('countdownService',['$interval','$log','$window',functio
       interval.cancel(_timeoutId);
     };
 
-    // start the UI update process; save the timeoutId for canceling
-    // updates UI every 1 second or 1000 ms
-    var getHourMinuteSecondRemainString = function(millis) {
+    var getHourMinuteSecondRemainString = function() {
+	return getHourMinuteSecondString(_remain);
+    };
+
+    var getHourMinuteSecondString = function(millis) {
 	//this constructor is milliseconds with respect to UTC epoch start
 	// so showing its value with non-UTC methods will adjust for 
 	// browser's timezone (i think that's what's happening?)
-	var remain= new Date(millis); 
-	var utcString = remain.toUTCString();
+	var dateFromMillis = new Date(millis); 
+	var utcString = dateFromMillis.toUTCString();
         var outputString = utcString.slice(-12,utcString.length - 4);
 	return outputString;
     };
 
+
     return {
 	startTimer : startTimer,
 	getTimeRemainingMillis: getTimeRemainingMillis,
-	getCountdownHourMinuteSecString: getCountdownHourMinuteSecString,
-        getElapsedMillis: getElapsedMillis
+	getHourMinuteSecondRemainString: getCountdownHourMinuteSecString,
+        getElapsedMillis: getElapsedMillis,
+	cancelCountdown : cancelCountdown
     };
   }
 ]);
