@@ -24,7 +24,13 @@ describe('service', function() {
       }));
   });
 
-  describe('when start time was 3000 milliseconds and 1001 seconds have passed', function() {
+  var testRunFor3000_1001 = serviceTests.countdownTests.doStartElapseTests(3000,1001,"00:00:01");
+  testRunFor3000_1001();
+  //start at 15 min, elapse 6 min, 27 s
+  var testRun900000_387000 = serviceTests.countdownTests.doStartElapseTests(900000,387000,"00:08:33");
+  testRun900000_387000();
+
+  /*describe('when start time was 3000 milliseconds and 1001 seconds have passed', function() {
       var startTime;
       var elapse;
       beforeEach(function(){
@@ -74,7 +80,7 @@ describe('service', function() {
 	startTime = 0;
 	elapse = 0;
       });
-  });
+  });*/
 
   //
   //test startTimer(<negative value>)
