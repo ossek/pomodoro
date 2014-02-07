@@ -16,6 +16,8 @@ var services_module = angular.module('pomodoro.services',[]);
 //http://docs.angularjs.org/guide/module#module-loading-&-dependencies_configuration-blocks
 //services_module.value('countdown_service',
 
+var isInteger = parameterCheck.integerCheck.isInteger;
+
 services_module.factory('countdownService',['$interval',function(interval){
     var _startDate;
     var _countdownFromMillis;
@@ -24,8 +26,15 @@ services_module.factory('countdownService',['$interval',function(interval){
     //run a timer with 0 value
     var _elapsedMillis = 0;
     var _remain = 0;
+    var updatePeriodMillis = 1000;
     
     var startTimer = function(countdownFromMillis){
+	if(typeof(countdownFromMillis) !== "number" || !isInteger(countdownFromMillis)){
+          throw "countdownFromMillis must be an integer";
+	}
+	if(countdownFromMillis < 0){
+          throw "cannot start timer with a value < 0";
+	}
 	//TODO either clear all private data or make it
 	//so each service dependency is uniquely instantiated
 	_countdownFromMillis = countdownFromMillis;
@@ -33,7 +42,7 @@ services_module.factory('countdownService',['$interval',function(interval){
 	//start ticking
 	_timeoutId = interval(function(){
           updateTimeRemaining();
-          }, 1000);
+          }, updatePeriodMillis);
     };
 
     var updateTimeRemaining = function() {
@@ -69,6 +78,17 @@ services_module.factory('countdownService',['$interval',function(interval){
 	return getHourMinuteSecondString(_remain);
     };
 
+    var reset = function(){
+	cancelCountdown();
+        var _startDate = 0;
+        var _countdownFromMillis = 0;
+        var _timeoutId = 0;
+        //start these each at 0 in the case where we want to 
+        //run a timer with 0 value
+        var _elapsedMillis = 0;
+        var _remain = 0;
+    };
+
     var getHourMinuteSecondString = function(millis) {
 	//this constructor is milliseconds with respect to UTC epoch start
 	// so showing its value with non-UTC methods will adjust for 
@@ -85,7 +105,8 @@ services_module.factory('countdownService',['$interval',function(interval){
 	getTimeRemainingMillis: getTimeRemainingMillis,
 	getHourMinuteSecondRemainString: getCountdownHourMinuteSecString,
         getElapsedMillis: getElapsedMillis,
-	cancelCountdown : cancelCountdown
+	cancelCountdown : cancelCountdown,
+	reset : reset
     };
   }
 ]);
