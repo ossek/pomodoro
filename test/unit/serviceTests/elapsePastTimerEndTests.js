@@ -1,11 +1,8 @@
-var serviceTests = serviceTests || {};
-serviceTests.countdownTestsPastTimer = (function(){
-
+define(['angularMocks','sinon','clockmock'],function(angularMocks,sinon,clockmock){
+    
   var elapseMillis = clockmock.elapseMillis;
-
   var doStartElapseTests = function(startTime,timeElapsed,expectedDisplay){
-      var runTests = function(){
-        describe('when start time was ' +  startTime + ' milliseconds and ' + timeElapsed + ' seconds have passed and timer has not been reset', function() {
+        describe('when start time was ' +  startTime + ' milliseconds and ' + timeElapsed + ' milliseconds have passed and timer has not been reset', function() {
               var _startTime;
               var _elapse;
               beforeEach(function(){
@@ -13,31 +10,20 @@ serviceTests.countdownTestsPastTimer = (function(){
                 _startTime = startTime;
                 _elapse = timeElapsed;
               });
-              
-              it('elapsedMillis + timeRemainingMillis should == startime', 
-                inject(function($rootScope,$interval,countdownService) {
-                    countdownService.startTimer(_startTime);
-                    elapseMillis($interval,this.clock,_elapse);
-                    var elapsedMillis = countdownService.getElapsedMillis();
-                    var timeRemainingMillis = countdownService.getTimeRemainingMillis();
-		    expect(timeRemainingMillis).toEqual(0);
-                    expect(elapsedMillis + timeRemainingMillis).toEqual(elapseMillis);
-                    expect(elapsedMillis).toEqual(_elapse);
-              }));
 	      
-	      //expect that time continues elapsing until a reset
+	      //expect that time does not continue elapsing until a reset
               it('elapsedMillis is the time elapsed', 
-                inject(function($rootScope,$interval,countdownService) {
+                angularMocks.inject(function($rootScope,$interval,countdownService) {
                     countdownService.startTimer(_startTime);
         	    elapseMillis($interval,this.clock,_elapse);
                     var timeRemainingMillis = countdownService.getTimeRemainingMillis();
                     var elapsedMillis = countdownService.getElapsedMillis();
 		    expect(timeRemainingMillis).toEqual(0);
-                    expect(elapsedMillis).toEqual(_elapse);
+                    expect(elapsedMillis).toEqual(_startTime);
               }));
         
               it('getHourMinuteSecondRemainString shows ' +  expectedDisplay, 
-                inject(function($rootScope,$interval,countdownService) {
+                angularMocks.inject(function($rootScope,$interval,countdownService) {
                     countdownService.startTimer(_startTime);
                     elapseMillis($interval,this.clock,_elapse);
                     var timeRemainingMillis = countdownService.getTimeRemainingMillis();
@@ -53,10 +39,5 @@ serviceTests.countdownTestsPastTimer = (function(){
               });
           });
       };
-      return runTests;
-  };
-
-  return {
-      doStartElapseTests : doStartElapseTests
-  };
-})();
+      return {doStartElapseTests : doStartElapseTests};
+  });

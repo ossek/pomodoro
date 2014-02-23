@@ -1,8 +1,6 @@
+define(['angular','services'],function(angular,services){
 'use strict';
-
 /* Directives */
-
-
 angular.module('pomodoro.directives', [])
   .directive('appVersion', ['version', function(version) {
     return function(scope, elm, attrs) {
@@ -104,3 +102,5 @@ angular.module('pomodoro.directives', [])
 
 
   }]);
+
+});
