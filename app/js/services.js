@@ -49,7 +49,10 @@ define(['angular','parameterCheck'],function(angular,parameterCheck){
       var updateTimeRemaining = function() {
         _elapsedMillis = Date.now() - _startDate;
         if (_elapsedMillis >= _countdownFromMillis){
-                interval.cancel(_timeoutId);
+	    //the elapsed millis should not show elapsing past the interval, 
+	    //since we are approximating stopping there
+	        _elapsedMillis = _countdownFromMillis;
+                cancelCountdown(_timeoutId);
                 _remain = 0;
         }
         else{

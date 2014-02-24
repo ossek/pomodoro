@@ -1,4 +1,8 @@
-define(['angularMocks'],function(angularMocks){
+define([
+	'angularMocks',
+	'angular',
+	'app'//this is needed to have access to pomodoro.filters
+	],function(angularMocks,angular,app){
   'use strict';
   describe('filter', function() {
     beforeEach(angularMocks.module('pomodoro.filters'));

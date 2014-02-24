@@ -6,8 +6,9 @@ define([
 	'angularMocks',
 	'app',
 	'countdownTests',
-	'elapsePastTimerEndTests'
-	], function(angular,mocks,app,countdownTests,elapsePastTimerEndTests){
+	'elapsePastTimerEndTests',
+	'clockmock'
+	], function(angular,mocks,app,countdownTests,elapsePastTimerEndTests,clockmock){
 'use strict';
 
 describe('service', function() {
@@ -40,7 +41,6 @@ describe('service', function() {
   testRun900000_387000();
   //elapse the time past the end of the startTime
   var testRun900000_1000000 = elapsePastTimerEndTests.doStartElapseTests(900000,1000000,"00:00:00");
-  testRun900000_1000000();
   
   describe('when start time is -1', function(){
       it('exception is thrown',
@@ -74,8 +74,61 @@ describe('service', function() {
   });
 
   //try with -0 because javascript is weird and that seems like something it would do
-  var testRunForneg0_1001 = countdownTests.doStartElapseTests(-0,1001,"00:00:00");
-  testRunForneg0_1001();
+  //normal cases with 0
+  describe('when start time was ' +  '0' + ' milliseconds and ' + '1001' + ' milliseconds have passed ', function() {
+                var _startTime;
+                var _elapse;
+                var expectedDisplay;
+		var elapseMillis;
+                beforeEach(function(){
+                  this.clock = sinon.useFakeTimers();
+                  _startTime = 0;
+                  _elapse = 1001;
+		  elapseMillis = clockmock.elapseMillis;
+		  expectedDisplay = '00:00:00';
+                });
+  
+                it('elapsedMillis is supposed to be 0', 
+                  mocks.inject(function($rootScope,$interval,countdownService) {
+                      countdownService.startTimer(_startTime);
+          	    elapseMillis($interval,this.clock,_elapse);
+                      var elapsedMillis = countdownService.getElapsedMillis();
+                      expect(elapsedMillis).toEqual(0);
+                }));
+                
+                it('timeRemaining is supposed to be 0', 
+                  mocks.inject(function($rootScope,$interval,countdownService) {
+                      countdownService.startTimer(_startTime);
+          	    elapseMillis($interval,this.clock,_elapse);
+                      var elapsedMillis = countdownService.getElapsedMillis();
+                      expect(elapsedMillis).toEqual(0);
+                }));
+  
+                it('elapsedMillis + timeRemainingMillis should == 0', 
+                  mocks.inject(function($rootScope,$interval,countdownService) {
+                      countdownService.startTimer(_startTime);
+                      elapseMillis($interval,this.clock,_elapse);
+                      var elapsedMillis = countdownService.getElapsedMillis();
+                      var timeRemainingMillis = countdownService.getTimeRemainingMillis();
+                      expect(elapsedMillis + timeRemainingMillis).toEqual(0);
+                      expect(elapsedMillis).toEqual(0);
+                }));
+          
+                it('getHourMinuteSecondRemainString shows ' +  expectedDisplay, 
+                  mocks.inject(function($rootScope,$interval,countdownService) {
+                      countdownService.startTimer(_startTime);
+                      elapseMillis($interval,this.clock,_elapse);
+                      var result = countdownService.getHourMinuteSecondRemainString();
+                      expect(result).toEqual(expectedDisplay);
+                }));
+          
+                afterEach(function(){
+                  this.clock.restore();
+          	_startTime = 0;
+          	_elapse = 0;
+                });
+            });
+
   //try with input larger than 99 hours
   //
   //try with a non-integer parameter
