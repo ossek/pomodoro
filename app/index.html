@@ -7,23 +7,14 @@
   <!-- In production use:
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
   -->
-  <script src="lib/angular/angular.js"></script>
-  <script src="lib/angular/angular-route.js"></script>
-  <script src="js/app.js"></script>
-  <script src="js/services.js"></script>
-  <script src="js/controllers.js"></script>
-  <script src="js/filters.js"></script>
-  <script src="js/directives.js"></script>
+  <script data-main="/js/main" src="/node_modules/requirejs/require.js"></script>
 </head>
 <body>
   <div class="tomato" >roma pomodoro timer</div>
   <div>go for it!<span app-version></span></div>
-  <div> <span class="timer" countdown=1500000></span></div>
   <div ng-view></div>
-
   <ul class="menu">
 	  <li><a href="#/pomodoro">pomodoro</a></li>
   </ul>
-
 </body>
 </html>

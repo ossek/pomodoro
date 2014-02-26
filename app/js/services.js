@@ -108,8 +108,9 @@ define(['angular','parameterCheck'],function(angular,parameterCheck){
   	startTimer : startTimer,
   	getTimeRemainingMillis: getTimeRemainingMillis,
   	getHourMinuteSecondRemainString: getCountdownHourMinuteSecString,
-          getElapsedMillis: getElapsedMillis,
+        getElapsedMillis: getElapsedMillis,
   	cancelCountdown : cancelCountdown,
+	timeRemaining : _remain,
   	reset : reset
       };
     }
