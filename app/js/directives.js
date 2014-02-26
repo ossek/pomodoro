@@ -8,7 +8,6 @@ angular.module('pomodoro.directives', [])
     };
   }])
   
-
 //note that the declaration below  of $interval in a string
 //is to deal with potential minification
 //see http://thegreenpizza.github.io/2013/05/25/building-minification-safe-angular.js-applications/

@@ -13,26 +13,35 @@ define(['angular','services'],function(angular,services){
       //TODO add toggling 
       //try to trigger time check based on time text changing?
       $scope.startPomodoro = function(){
-         countdownService.reset();
+         console.log('starting');
+         $scope.timeRemaining = countdownService.getHourMinuteSecondRemainString(TWENTY_FIVE_IN_MILLIS_EPOCH); 
          countdownService.startTimer(TWENTY_FIVE_IN_MILLIS_EPOCH);
       };
     
       $scope.reset = function(){
-         countdownService.reset();
+         //countdownService.reset();
+        countdownService.startTimer(0);
       };
     
       $scope.shortBreak = function(){
-        countdownService.reset();
+        $scope.timeRemaining = countdownService.getHourMinuteSecondRemainString(FIVE_IN_MILLIS_EPOCH); 
         countdownService.startTimer(FIVE_IN_MILLIS_EPOCH);
       };
     
       $scope.longBreak = function(){
-        countdownService.reset();
+         $scope.timeRemaining = countdownService.getHourMinuteSecondRemainString(TEN_IN_MILLIS_EPOCH); 
         countdownService.startTimer(TEN_IN_MILLIS_EPOCH);
       };
 
-      $scope.timeRemaining = countdownService.timeRemaining; 
+      console.log('timeRemaining ' + $scope.timeRemaining);
+
+      $scope.$watch(countdownService.getTimeRemainingMillis,function(newValue,oldValue){
+          console.log('watchin old' + oldValue + " new " + newValue);
+          $scope.timeRemaining = countdownService.getHourMinuteSecondRemainString(newValue);
+      });
 
     }]);
+
+    return pomodoroControllers;
 
 });
