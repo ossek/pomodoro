@@ -3,7 +3,8 @@
 require.config({
     paths: {
 	angular : '../lib/angular/angular',
-	angularRoute : '../lib/angular/angular-route'
+	angularRoute : '../lib/angular/angular-route',
+	timey: '../../bower_components/timeywimey/js/timey'
 	//angularMocks
 	//text
     },

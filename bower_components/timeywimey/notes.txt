@@ -1,0 +1,13 @@
+ - this is a result of an attempt to split some functionality for an angular js timer interface into its own module
+
+ - some steps:
+   - npm install requirejs
+   - npm install karma-jasmine
+   - npm install sinon
+
+   - setup karma jasmine config
+   - setup test-main.js 
+
+   - setup bower package
+   - publish it (locally)
+  

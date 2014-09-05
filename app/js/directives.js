@@ -2,11 +2,12 @@ define(['angular','services'],function(angular,services){
 'use strict';
 /* Directives */
 angular.module('pomodoro.directives', [])
-  .directive('appVersion', ['version', function(version) {
-    return function(scope, elm, attrs) {
-      elm.text(version);
-    };
-  }])
+	//this directive seemed to cause a problem on load.  possibly not shimmed in requirejs
+  //.directive('appVersion', ['version', function(version) {
+  //  return function(scope, elm, attrs) {
+  //    elm.text(version);
+  //  };
+  //}])
   
 //note that the declaration below  of $interval in a string
 //is to deal with potential minification
