@@ -8,9 +8,9 @@ define(['angular','services','timey'],function(angular,services,timey){
   console.log("trying to load controller");
   var pomodoroControllers = angular.module('pomodoro.controllers', ['pomodoro.services']);
   
-  pomodoroControllers.controller('pomodoroCtrl', ['$scope','$routeParams','countdownService',
+  pomodoroControllers.controller('pomodoroCtrl', ['$scope','$routeParams','countdownService','$interval',
      //TODO make this an async function
-    function($scope,$routeParams,countdownService){
+    function($scope,$routeParams,countdownService,$interval){
       //TODO add toggling 
       //try to trigger time check based on time text changing?
       console.log("load controller");
@@ -41,17 +41,18 @@ define(['angular','services','timey'],function(angular,services,timey){
         timer.startTimer(TEN_IN_MILLIS_EPOCH);
       };
 
-      console.log('timeRemaining ' + $scope.timeRemaining);
+      //if the timey object updates its current time every second
+      //then checking the time more than every second here should
+      //catch its updates.  this boils down to periodically (via setInterval)
+      //checking something that's also updated periodically (via setInterval).
+      //due to js being single threaded in browser, this (as any step taken while the timer is going) will further reduce the accuracy of the timer
 
-      //$scope.$watch(timer.getTimeRemainingMillis,function(newValue,oldValue){
-      //    console.log('watchin old' + oldValue + " new " + newValue);
-      //    $scope.timeRemaining = timer.getHourMinuteSecondString(newValue);
-      //    console.log('timeRemaining ' + $scope.timeRemaining);
-      //});
-
-      $scope.getHourMinuteSecondRemainString = (function(){console.log('getting');return timer.getHourMinuteSecondRemainString;});
-
-      $scope.$watch($scope.getHourMinuteSecondRemainString,function(newv,oldv){});
+      //this is only here to invoke apply / do dirty checking every 
+      //half second so that the current time is updated.
+      //not pretty.
+      $interval(function(){
+	      $scope.timeRemaining = timer.getHourMinuteSecondRemainString();
+      },500,0,true);
 
     }]);
 
