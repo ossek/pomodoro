@@ -1,7 +1,13 @@
 <div>
-	<h2>{{timeRemaining}}</h2>
 	<!--todo make this a start/stop toggle -->
+<div>
+	<input type="number" value="minutes" ng-model="inputMins" min="0" max="60" >
+	<input type="number" value="seconds" ng-model="inputSecs" min="0" max="60" >
+</div>
+<div>
 	<input type="button" value="start pomodoro" ng-click="startPomodoro()">
 	<input type="button" value="stop pomodoro">
 	<input type="button" value="reset pomodoro" ng-click="reset()">
+</div>
+<h2>{{timeRemaining}}</h2>
 </div>

@@ -7,7 +7,7 @@ input {
   vertical-align:middle;
 }
 
-input {
+input[type="button"],input[type="submit"] {
   color:#E5FFE5;
   background-color:#007500;
   border:1px solid;
