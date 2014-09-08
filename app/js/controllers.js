@@ -17,8 +17,26 @@ define(['angular','services','timey'],function(angular,services,timey){
 
       $scope.timeRemaining = timer.getHourMinuteSecondString(0);
 
-      $scope.startPomodoro = function(){
-         timer.startTimer(TWENTY_FIVE_IN_MILLIS_EPOCH);
+      $scope.startTimer = function(){
+         var inputMillis = getMillisFromInput($scope.inputMins,$scope.inputSecs);
+	 if(inputMillis === null){
+           timer.startTimer(TWENTY_FIVE_IN_MILLIS_EPOCH);
+	   return;
+	 }
+	 timer.startTimer(inputMillis);
+      };
+
+      var getMillisFromInput = function(inputMins,inputSecs){
+	      var millis = null;
+	      if(inputMins === null || inputMins === undefined){
+		      if(inputSecs === null || inputMins === undefined){
+			      return millis;
+		      }
+		      return inputSecs * 1000;
+	      }
+	      millis = 60*1000* inputMins; 
+	      var secs = (inputSecs === null || inputSecs === undefined) ? 0 : inputSecs;
+	      return millis + (secs * 1000);
       };
     
       $scope.reset = function(){

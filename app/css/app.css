@@ -5,6 +5,9 @@ input {
   font-family: Verdana, Geneva, "DejaVu Sans", sans-serif;
   text-align:center;
   vertical-align:middle;
+  -moz-border-radius:.25em;
+  -webkit-border-radius:.25em;
+  border-radius:.25em;
 }
 
 input[type="button"],input[type="submit"] {
@@ -12,20 +15,17 @@ input[type="button"],input[type="submit"] {
   background-color:#007500;
   border:1px solid;
   border-color:#B5FFB5;
-  -moz-border-radius:8px;
-  -webkit-border-radius:8px;
-  border-radius:8px;
   display:inline-block;
   padding: 5px 10px;
 
 }
 
-input:hover{
+input[type="button"]:hover,input[type="submit"]:hover{
   color:#C5FFC5;
   background-color:#004500;
 }
 
-input:active{
+input[type="button"]:active,input[type="submit"]:active{
   position:relative;
   top:2px;
 }
