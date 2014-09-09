@@ -30,6 +30,10 @@ input[type="button"]:active,input[type="submit"]:active{
   top:2px;
 }
 
+input.timeText{
+	font-size:120%;
+}
+
 .timer {
   font-size:300%;
 }

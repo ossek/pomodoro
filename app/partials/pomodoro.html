@@ -1,8 +1,9 @@
 <div>
 	<!--todo make this a start/stop toggle -->
 <div>
-	<input type="number" value="minutes" ng-model="inputMins" min="0" max="60" ng-maxlength="2" ng-pattern="/^[0-9]{0,2}$/" >
-	<input type="number" value="seconds" ng-model="inputSecs" min="0" max="60" ng-maxlength="2" ng-pattern="/^[0-9]{0,2}$/">
+	<input id="hoursInput" type="text" name="hours" class="timeText" ng-model="inputHours" ng-change="hourMask()" size="2" placeholder="00">:
+	<input id="minutesInput" type="text" name="minutes" class="timeText" ng-model="inputMinutes" ng-change="minuteMask()" size="2" placeholder="00">:
+	<input id="secondsInput" type="text" name="seconds" class="timeText" ng-model="inputSeconds" ng-change="secondMask()" size="2" placeholder="00">
 </div>
 <div>
 	<input type="button" value="start pomodoro" ng-click="startTimer()">

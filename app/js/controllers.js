@@ -1,4 +1,4 @@
-define(['angular','services','timey'],function(angular,services,timey){
+define(['angular','services','timey','parameterCheck'],function(angular,services,timey,parameterCheck){
   'use strict';
   /* Controllers */
   var TWENTY_FIVE_IN_MILLIS_EPOCH = 1500000;
@@ -18,7 +18,7 @@ define(['angular','services','timey'],function(angular,services,timey){
       $scope.timeRemaining = timer.getHourMinuteSecondString(0);
 
       $scope.startTimer = function(){
-         var inputMillis = getMillisFromInput($scope.inputMins,$scope.inputSecs);
+         var inputMillis = getMillisFromInput($scope.inputMinutes,$scope.inputSeconds);
 	 if(inputMillis === null){
            timer.startTimer(TWENTY_FIVE_IN_MILLIS_EPOCH);
 	   return;
@@ -37,6 +37,53 @@ define(['angular','services','timey'],function(angular,services,timey){
 	      millis = 60*1000* inputMins; 
 	      var secs = (inputSecs === null || inputSecs === undefined) ? 0 : inputSecs;
 	      return millis + (secs * 1000);
+      };
+
+      $scope.hourMask = function(){
+	      if(!nullOrUndefined($scope.inputHours)){
+		      if(!parameterCheck.isInteger($scope.inputHours)){
+			      $scope.inputHours = "";
+			      return;
+		      }
+		      if($scope.inputHours.toString().length > 2)
+		      {
+			      $scope.inputHours = twoDigits($scope.inputHours);
+		      }
+	      }
+      };
+
+      $scope.minuteMask = function(){
+	      if(!nullOrUndefined($scope.inputMinutes)){
+		      if(!parameterCheck.isInteger($scope.inputMinutes)){
+			      $scope.inputMinutes = "";
+			      return;
+		      }
+		      if($scope.inputMinutes.toString().length > 2)
+		      {
+			      $scope.inputMinutes = twoDigits($scope.inputMinutes);
+		      }
+	      }
+      };
+
+      $scope.secondMask = function(){
+	      if(!nullOrUndefined($scope.inputSeconds)){
+		      if(!parameterCheck.isInteger($scope.inputSeconds)){
+			      $scope.inputSeconds = "";
+			      return;
+		      }
+		      if($scope.inputSeconds.toString().length > 2)
+		      {
+			      $scope.inputSeconds = twoDigits($scope.inputSeconds);
+		      }
+	      }
+      };
+
+      var twoDigits = function(inputDigits){
+          return parseInt(inputDigits.toString().substring(0,2));
+      };
+
+      var nullOrUndefined = function(value){
+	      return value === null || value === undefined;
       };
     
       $scope.reset = function(){
