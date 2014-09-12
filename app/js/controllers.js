@@ -18,7 +18,7 @@ define(['angular','services','timey','parameterCheck'],function(angular,services
       $scope.timeRemaining = timer.getHourMinuteSecondString(0);
 
       $scope.startTimer = function(){
-         var inputMillis = getMillisFromInput($scope.inputMinutes,$scope.inputSeconds);
+         var inputMillis = getMillisFromInput($scope.inputHours,$scope.inputMinutes,$scope.inputSeconds);
 	 if(inputMillis === null){
            timer.startTimer(TWENTY_FIVE_IN_MILLIS_EPOCH);
 	   return;
@@ -27,21 +27,28 @@ define(['angular','services','timey','parameterCheck'],function(angular,services
       };
 
       $scope.startTimerFromEditor = function(){
+	      //$scope.reset();
 	      $scope.startTimer();
 	      setEditorInactive();
       };
 
-      var getMillisFromInput = function(inputMins,inputSecs){
-	      var millis = null;
-	      if(inputMins === null || inputMins === undefined){
-		      if(inputSecs === null || inputMins === undefined){
-			      return millis;
-		      }
-		      return inputSecs * 1000;
+      var getMillisFromInput = function(inputHours,inputMins,inputSecs){
+	      console.log(' hours ' + inputHours + ' mins ' + inputMins + ' secs ' + inputSecs);
+	      var hoursMillis = 0;
+	      if(!(inputHours === null || inputHours === undefined)){
+		      hoursMillis = inputHours*60*60*1000;
 	      }
-	      millis = 60*1000* inputMins; 
-	      var secs = (inputSecs === null || inputSecs === undefined) ? 0 : inputSecs;
-	      return millis + (secs * 1000);
+
+	      var minuteMillis = 0;
+	      if(!(inputMins === null || inputMins === undefined)){
+		      minuteMillis = inputMins*60*1000;
+	      }
+
+	      var secMillis = 0;
+	      if(!(inputSecs === null || inputSecs === undefined)){
+		      secMillis = inputSecs*1000;
+	      }
+	      return hoursMillis + minuteMillis + secMillis;
       };
 
       $scope.hourMask = function(){
@@ -117,7 +124,7 @@ define(['angular','services','timey','parameterCheck'],function(angular,services
 
       $interval(function(){
       	$scope.timeRemaining = timey.getHourMinuteSecondRemainString();
-      },250,0,true);
+      },20,0,true);
 
     }]);
 

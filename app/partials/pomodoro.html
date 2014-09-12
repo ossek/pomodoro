@@ -1,11 +1,14 @@
 <div>
-	<!--todo make this a start/stop toggle -->
+<div id="timer" >
   <div id="timeRemaining" ng-show="!editorActive" >{{timeRemaining}}</div>
   <div id="editor" ng-show="editorActive">
   	<input id="hoursInput" type="text" name="hours" class="timeText" ng-model="inputHours" ng-change="hourMask()" size="2" placeholder="00">:
   	<input id="minutesInput" type="text" name="minutes" class="timeText" ng-model="inputMinutes" ng-change="minuteMask()" size="2" placeholder="00">:
   	<input id="secondsInput" type="text" name="seconds" class="timeText" ng-model="inputSeconds" ng-change="secondMask()" size="2" placeholder="00">
   </div>
+  </div>
+
+	<!--todo make this a start/stop toggle -->
   <div>
   	<!--<input type="button" value="pomodoro" ng-click="startPomodoro">-->
   	<input type="button" value="set" ng-click="setEditorActive()">
