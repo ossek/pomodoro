@@ -26,6 +26,11 @@ define(['angular','services','timey','parameterCheck'],function(angular,services
 	 timer.startTimer(inputMillis);
       };
 
+      $scope.startTimerFromEditor = function(){
+	      $scope.startTimer();
+	      setEditorInactive();
+      };
+
       var getMillisFromInput = function(inputMins,inputSecs){
 	      var millis = null;
 	      if(inputMins === null || inputMins === undefined){
@@ -76,6 +81,18 @@ define(['angular','services','timey','parameterCheck'],function(angular,services
 			      $scope.inputSeconds = twoDigits($scope.inputSeconds);
 		      }
 	      }
+      };
+
+      $scope.editorActive = false;
+
+      $scope.setEditorActive = function(){
+	      $scope.editorActive = true;
+      };
+
+      var setEditorInactive = function(){
+	      console.log("set editor inactive");
+	      $scope.editorActive = false;
+	      //todo set timer value to input
       };
 
       var twoDigits = function(inputDigits){
