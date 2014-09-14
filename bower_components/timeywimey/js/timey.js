@@ -10,11 +10,11 @@ define(['parameterCheck'],function(parameterCheck){
       //run a timer with 0 value
       var _elapsedMillis = 0;
       var _remain = 0;
-      var _updatePeriodMillis = 1000;
-
+      var _updatePeriodMillis = 250;
+      var _isPaused = false;
 
       var startTimer = function(countdownFromMillis){
-	      startTimerWithUpdatePeriodMillis(countdownFromMillis,1000);
+	      startTimerWithUpdatePeriodMillis(countdownFromMillis,250);
       };
       
       var startTimerWithUpdatePeriodMillis = function(countdownFromMillis,updatePeriodMillis){
@@ -24,8 +24,15 @@ define(['parameterCheck'],function(parameterCheck){
   	if(countdownFromMillis < 0){
             throw "cannot start timer with a value < 0";
   	}
+	//must make sure any previously started interval is cancelled before starting a new one.
+	//since the reassignment to _timeoutId will make is so we lose hold of any previously defined
+	//timeout id for a timeout that may still be ongoing
+	reset();
   	_countdownFromMillis = countdownFromMillis;
+	_isPaused =false;
   	_startDate = Date.now(); 
+	_updatePeriodMillis = updatePeriodMillis;
+	_remain = countdownFromMillis;
   	_timeoutId = window.setInterval(function(){
             updateTimeRemaining();
             }, _updatePeriodMillis);
@@ -60,11 +67,6 @@ define(['parameterCheck'],function(parameterCheck){
   	return _elapsedMillis;
       };
   
-      var getCountdownHourMinuteSecString = function(){
-  	var countdownValue = getHourMinuteSecondRemainString(getTimeRemainingMillis);
-  	return countdownValue;
-      };
-  
       var cancelCountdown = function(){
         window.clearInterval(_timeoutId);
       };
@@ -82,6 +84,7 @@ define(['parameterCheck'],function(parameterCheck){
           //run a timer with 0 value
           _elapsedMillis = 0;
           _remain = 0;
+	  _isPaused = false;
       };
   
       var getHourMinuteSecondString = function(millis) {
@@ -90,21 +93,32 @@ define(['parameterCheck'],function(parameterCheck){
   	// browser's timezone (i think that's what's happening?)
   	var dateFromMillis = new Date(millis); 
   	var utcString = dateFromMillis.toUTCString();
-          var outputString = utcString.slice(-12,utcString.length - 4);
+        var outputString = utcString.slice(-12,utcString.length - 4);
   	return outputString;
+      };
+
+
+      var pause = function(){
+	      cancelCountdown();
+	      _isPaused=true;
+      };
+
+      var resume = function(){
+	      //depends on this function resetting _isPaused
+	      startTimerWithUpdatePeriodMillis(_remain,_updatePeriodMillis);
       };
   
       return {
   	startTimer : startTimer,
+        getHourMinuteSecondString : getHourMinuteSecondString,
+  	reset : reset,
   	getTimeRemainingMillis: getTimeRemainingMillis,
-        getCountdownHourMinuteSecString : getCountdownHourMinuteSecString,
   	getHourMinuteSecondRemainString: getHourMinuteSecondRemainString,
         getElapsedMillis: getElapsedMillis,
   	cancelCountdown : cancelCountdown,
-	timeRemaining : _remain,
-  	reset : reset,
         GetUpdatePeriodMillis : GetUpdatePeriodMillis,
-        getHourMinuteSecondString : getHourMinuteSecondString
+	pause : pause,
+	resume: resume,
       };
 });
 

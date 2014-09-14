@@ -5,101 +5,38 @@ define(['angular','services','timey','parameterCheck'],function(angular,services
   var FIVE_IN_MILLIS_EPOCH = 300000;
   var TEN_IN_MILLIS_EPOCH = 600000;
   
-  console.log("trying to load controller");
   var pomodoroControllers = angular.module('pomodoro.controllers', ['pomodoro.services']);
   
   pomodoroControllers.controller('pomodoroCtrl', ['$scope','$routeParams','$interval',
      //TODO make this an async function
     function($scope,$routeParams,$interval){
-      //TODO add toggling 
-      console.log("load controller");
       var timer = Object.create(timey);
+      //var timer = timey;
 
-      $scope.timeRemaining = timer.getHourMinuteSecondString(0);
-
-      $scope.startTimer = function(){
-         var inputMillis = getMillisFromInput($scope.inputHours,$scope.inputMinutes,$scope.inputSeconds);
-	 if(inputMillis === null){
-           timer.startTimer(TWENTY_FIVE_IN_MILLIS_EPOCH);
-	   return;
-	 }
-	 timer.startTimer(inputMillis);
+      $scope.timerDisplay = {
+	      timeRemaining : "00:00:00",
+              editorActive : false,
       };
 
-      $scope.startTimerFromEditor = function(){
-	      //$scope.reset();
-	      $scope.startTimer();
-	      setEditorInactive();
-      };
-
+      //controller interface internals
       var getMillisFromInput = function(inputHours,inputMins,inputSecs){
-	      console.log(' hours ' + inputHours + ' mins ' + inputMins + ' secs ' + inputSecs);
 	      var hoursMillis = 0;
+	      var minuteMillis = 0;
+	      var secMillis = 0;
 	      if(!(inputHours === null || inputHours === undefined)){
 		      hoursMillis = inputHours*60*60*1000;
 	      }
-
-	      var minuteMillis = 0;
 	      if(!(inputMins === null || inputMins === undefined)){
 		      minuteMillis = inputMins*60*1000;
 	      }
-
-	      var secMillis = 0;
 	      if(!(inputSecs === null || inputSecs === undefined)){
 		      secMillis = inputSecs*1000;
 	      }
 	      return hoursMillis + minuteMillis + secMillis;
       };
 
-      $scope.hourMask = function(){
-	      if(!nullOrUndefined($scope.inputHours)){
-		      if(!parameterCheck.isInteger($scope.inputHours)){
-			      $scope.inputHours = "";
-			      return;
-		      }
-		      if($scope.inputHours.toString().length > 2)
-		      {
-			      $scope.inputHours = twoDigits($scope.inputHours);
-		      }
-	      }
-      };
-
-      $scope.minuteMask = function(){
-	      if(!nullOrUndefined($scope.inputMinutes)){
-		      if(!parameterCheck.isInteger($scope.inputMinutes)){
-			      $scope.inputMinutes = "";
-			      return;
-		      }
-		      if($scope.inputMinutes.toString().length > 2)
-		      {
-			      $scope.inputMinutes = twoDigits($scope.inputMinutes);
-		      }
-	      }
-      };
-
-      $scope.secondMask = function(){
-	      if(!nullOrUndefined($scope.inputSeconds)){
-		      if(!parameterCheck.isInteger($scope.inputSeconds)){
-			      $scope.inputSeconds = "";
-			      return;
-		      }
-		      if($scope.inputSeconds.toString().length > 2)
-		      {
-			      $scope.inputSeconds = twoDigits($scope.inputSeconds);
-		      }
-	      }
-      };
-
-      $scope.editorActive = false;
-
-      $scope.setEditorActive = function(){
-	      $scope.editorActive = true;
-      };
-
       var setEditorInactive = function(){
-	      console.log("set editor inactive");
-	      $scope.editorActive = false;
-	      //todo set timer value to input
+	      $scope.timerDisplay.editorActive = false;
       };
 
       var twoDigits = function(inputDigits){
@@ -109,9 +46,81 @@ define(['angular','services','timey','parameterCheck'],function(angular,services
       var nullOrUndefined = function(value){
 	      return value === null || value === undefined;
       };
-    
+
+      //update the display frequently
+      $interval(function(){
+      	$scope.timerDisplay.timeRemaining = timer.getHourMinuteSecondRemainString();
+      },20,0,true);
+
+
+      //controller interface
+      $scope.startTimer = function(){
+         var inputMillis = getMillisFromInput($scope.timerDisplay.inputHours,$scope.timerDisplay.inputMinutes,$scope.timerDisplay.inputSeconds);
+	 if(inputMillis === null){
+           timer.startTimer(TWENTY_FIVE_IN_MILLIS_EPOCH);
+	   return;
+	 }
+	 timer.startTimer(inputMillis);
+      };
+
+      $scope.startTimerFromEditor = function(){
+	      $scope.startTimer();
+	      setEditorInactive();
+      };
+
+      $scope.hourMask = function(){
+	      if(!nullOrUndefined($scope.timerDisplay.inputHours)){
+		      if(!parameterCheck.isInteger($scope.timerDisplay.inputHours)){
+			      $scope.timerDisplay.inputHours = "";
+			      return;
+		      }
+		      if($scope.timerDisplay.inputHours.toString().length > 2)
+		      {
+			      $scope.timerDisplay.inputHours = twoDigits($scope.timerDisplay.inputHours);
+		      }
+	      }
+      };
+
+      $scope.minuteMask = function(){
+	      if(!nullOrUndefined($scope.timerDisplay.inputMinutes)){
+		      if(!parameterCheck.isInteger($scope.timerDisplay.inputMinutes)){
+			      $scope.timerDisplay.inputMinutes = "";
+			      return;
+		      }
+		      if($scope.timerDisplay.inputMinutes.toString().length > 2)
+		      {
+			      $scope.timerDisplay.inputMinutes = twoDigits($scope.timerDisplay.inputMinutes);
+		      }
+	      }
+      };
+
+      $scope.secondMask = function(){
+	      if(!nullOrUndefined($scope.timerDisplay.inputSeconds)){
+		      if(!parameterCheck.isInteger($scope.timerDisplay.inputSeconds)){
+			      $scope.timerDisplay.inputSeconds = "";
+			      return;
+		      }
+		      if($scope.timerDisplay.inputSeconds.toString().length > 2)
+		      {
+			      $scope.timerDisplay.inputSeconds = twoDigits($scope.timerDisplay.inputSeconds);
+		      }
+	      }
+      };
+
+      $scope.setEditorActive = function(){
+	      $scope.timerDisplay.editorActive = true;
+      };
+
       $scope.reset = function(){
         timer.reset();
+      };
+
+      $scope.pause = function(){
+	      timer.pause();
+      };
+
+      $scope.resume = function(){
+	      timer.resume();
       };
     
       $scope.shortBreak = function(){
@@ -121,11 +130,6 @@ define(['angular','services','timey','parameterCheck'],function(angular,services
       $scope.longBreak = function(){
         timer.startTimer(TEN_IN_MILLIS_EPOCH);
       };
-
-      $interval(function(){
-      	$scope.timeRemaining = timey.getHourMinuteSecondRemainString();
-      },20,0,true);
-
     }]);
 
     return pomodoroControllers;
