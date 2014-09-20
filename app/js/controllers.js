@@ -67,11 +67,17 @@ define(['angular','services','timey','parameterCheck'],function(angular,services
 
       //controller interface
       $scope.startTimer = function(){
-         var inputMillis = getMillisFromInput($scope.timerDisplay.inputHours,$scope.timerDisplay.inputMinutes,$scope.timerDisplay.inputSeconds);
+         var inputMillis = getMillisFromInput($scope.timerDisplay.inputHours,
+			 $scope.timerDisplay.inputMinutes,
+			 $scope.timerDisplay.inputSeconds);
 	 if(inputMillis === null){
            timer.startTimer(TWENTY_FIVE_IN_MILLIS_EPOCH);
 	   return;
 	 }
+	 //clear inputs
+	 $scope.timerDisplay.inputHours = 0;
+	 $scope.timerDisplay.inputMinutes = 0;
+	 $scope.timerDisplay.inputSeconds = 0;
 	 timer.startTimer(inputMillis);
       };
 
