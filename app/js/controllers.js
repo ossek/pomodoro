@@ -11,12 +11,14 @@ define(['angular','services','timey','parameterCheck'],function(angular,services
      //TODO make this an async function
     function($scope,$routeParams,$interval){
       var timer = Object.create(timey);
-      //var timer = timey;
+      console.log(timer);
 
       $scope.timerDisplay = {
 	      timeRemaining : "00:00:00",
               editorActive : false,
       };
+
+      $scope.completedTimes = [];
 
       //controller interface internals
       var getMillisFromInput = function(inputHours,inputMins,inputSecs){
@@ -46,6 +48,16 @@ define(['angular','services','timey','parameterCheck'],function(angular,services
       var nullOrUndefined = function(value){
 	      return value === null || value === undefined;
       };
+
+      var addCompleted = function(timerFinishedEventObj){
+	      if(timerFinishedEventObj.completedCountdownMillis >= 1000){
+	        $scope.completedTimes.push({
+	                time : timer.getHourMinuteSecondString(timerFinishedEventObj.completedCountdownMillis),
+	                at : timer.getLocalTimeString(timerFinishedEventObj.finishedAt),
+	        });
+	      }
+      };
+      timer.registerObserver(addCompleted);
 
       //update the display frequently
       $interval(function(){
@@ -130,6 +142,7 @@ define(['angular','services','timey','parameterCheck'],function(angular,services
       $scope.longBreak = function(){
         timer.startTimer(TEN_IN_MILLIS_EPOCH);
       };
+
     }]);
 
     return pomodoroControllers;

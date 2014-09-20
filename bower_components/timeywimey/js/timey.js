@@ -12,6 +12,7 @@ define(['parameterCheck'],function(parameterCheck){
       var _remain = 0;
       var _updatePeriodMillis = 250;
       var _isPaused = false;
+      var _observers = [];
 
       var startTimer = function(countdownFromMillis){
 	      startTimerWithUpdatePeriodMillis(countdownFromMillis,250);
@@ -51,6 +52,10 @@ define(['parameterCheck'],function(parameterCheck){
 	    //since we are approximating stopping there
 	        _elapsedMillis = _countdownFromMillis;
                 cancelCountdown(_timeoutId);
+		fireTimerFinished({
+		  completedCountdownMillis: _elapsedMillis,
+		  finishedAt: Date.now(),
+	         });
                 _remain = 0;
         }
         else{
@@ -88,15 +93,30 @@ define(['parameterCheck'],function(parameterCheck){
       };
   
       var getHourMinuteSecondString = function(millis) {
-  	//this constructor is milliseconds with respect to UTC epoch start
-  	// so showing its value with non-UTC methods will adjust for 
-  	// browser's timezone (i think that's what's happening?)
   	var dateFromMillis = new Date(millis); 
-  	var utcString = dateFromMillis.toUTCString();
-        var outputString = utcString.slice(-12,utcString.length - 4);
+	var outputString = padTimeWithLeading0(dateFromMillis.getUTCHours()) + ":" + 
+		padTimeWithLeading0(dateFromMillis.getUTCMinutes()) + ":" + 
+		padTimeWithLeading0(dateFromMillis.getUTCSeconds());
   	return outputString;
       };
 
+      var getLocalTimeString = function(millis){
+  	var dateFromMillis = new Date(millis); 
+	var outputString = padTimeWithLeading0(dateFromMillis.getHours()) + ":" + 
+		padTimeWithLeading0(dateFromMillis.getMinutes()) + ":" + 
+		padTimeWithLeading0(dateFromMillis.getSeconds());
+  	return outputString;
+      };
+
+      var padTimeWithLeading0 = function(number){
+	      if(number.toString().length === 0){
+		      return "00";
+	      }
+	      if(number.toString().length === 1){
+		      return "0" + number.toString();
+	      }
+	      return number.toString();
+      };
 
       var pause = function(){
 	      cancelCountdown();
@@ -107,10 +127,24 @@ define(['parameterCheck'],function(parameterCheck){
 	      //depends on this function resetting _isPaused
 	      startTimerWithUpdatePeriodMillis(_remain,_updatePeriodMillis);
       };
+
+      var registerObserver = function(observerFunc){
+	      _observers.push(observerFunc);
+      };
+
+      var fireTimerFinished = function(timerFinishedEventObj){
+	      var i = 0;
+	      for (i; i < _observers.length; i++){
+	        if(typeof _observers[i] === "function"){
+	          _observers[i](timerFinishedEventObj);
+	        }
+	      }
+      };
   
       return {
   	startTimer : startTimer,
         getHourMinuteSecondString : getHourMinuteSecondString,
+        getLocalTimeString : getLocalTimeString,
   	reset : reset,
   	getTimeRemainingMillis: getTimeRemainingMillis,
   	getHourMinuteSecondRemainString: getHourMinuteSecondRemainString,
@@ -119,6 +153,7 @@ define(['parameterCheck'],function(parameterCheck){
         GetUpdatePeriodMillis : GetUpdatePeriodMillis,
 	pause : pause,
 	resume: resume,
+	registerObserver : registerObserver
       };
 });
 

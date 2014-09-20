@@ -2,7 +2,7 @@
 
 html,
 input {
-  font-family: Verdana, Geneva, "DejaVu Sans", sans-serif;
+  font-family:aleoregular,Verdana, Geneva, "DejaVu Sans", sans-serif;
   text-align:center;
   vertical-align:middle;
   -moz-border-radius:.25em;
@@ -17,7 +17,7 @@ input[type="button"],input[type="submit"] {
   border-color:#B5FFB5;
   display:inline-block;
   padding: 5px 10px;
-
+  font-size: 120%;
 }
 
 input[type="button"]:hover,input[type="submit"]:hover{
@@ -31,11 +31,12 @@ input[type="button"]:active,input[type="submit"]:active{
 }
 
 input.timeText{
-	font-size:120%;
+	font-size:200%;
 }
 
-.timer {
-  font-size:300%;
+.timerText {
+  font-family:aleobold,Verdana, Geneva, "DejaVu Sans", sans-serif;
+  font-size:250%;
 }
 
 .menu,
@@ -75,6 +76,21 @@ input.timeText{
 
 div title {
   color:limegreen;
+}
+
+.greenRow {
+  background-color:limegreen;
+}
+
+.greyRow {
+  background-color:#b3b3b3;
+}
+
+.quarterWidth {
+	width:25%;
+	margin: 0 auto;
+	/*display:flex;*/
+	justify-content:center;
 }
 
 

@@ -1,6 +1,6 @@
 <div>
 <div id="timerFace" >
-  <div id="timeRemaining" ng-show="!timerDisplay.editorActive" >{{timerDisplay.timeRemaining}}</div>
+  <div id="timeRemaining" class="timerText" ng-show="!timerDisplay.editorActive" >{{timerDisplay.timeRemaining}}</div>
   <div id="editor" ng-show="timerDisplay.editorActive">
   	<input id="hoursInput" type="text" name="hours" class="timeText" ng-model="timerDisplay.inputHours" ng-change="hourMask()" size="2" placeholder="00" >:
   	<input id="minutesInput" type="text" name="minutes" class="timeText" ng-model="timerDisplay.inputMinutes" ng-change="minuteMask()" size="2" placeholder="00">:
@@ -15,5 +15,16 @@
   	<input type="button" value="start" ng-click="startTimerFromEditor()">
   	<input type="button" value="pause" ng-click="pause()">
   	<input type="button" value="resume" ng-click="resume()">
+  </div>
+  <div class="greenRow">&nbsp</div>
+  <div class="quarterWidth">completed timers:</div>
+  <div id="completed" class="quarterWidth">
+	  <div class="completed"  ng-repeat="completedTime in completedTimes">
+		  <div ng-class-odd="'greenRow'" ng-class-even="'greyRow'">
+			  <span>{{completedTime.time}}</span>
+			  <span> at </span>
+			  <span>{{completedTime.at}}</span>
+		  </div>
+	  </div>
   </div>
 </div>
