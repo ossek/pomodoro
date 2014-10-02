@@ -1,29 +1,30 @@
 <div>
 <div id="timerFace" >
-  <div id="timeRemaining" class="timerText" ng-show="!timerDisplay.editorActive" >{{timerDisplay.timeRemaining}}</div>
-  <div id="editor" ng-show="timerDisplay.editorActive">
-  	<input id="hoursInput" type="text" name="hours" class="timeText" ng-model="timerDisplay.inputHours" ng-change="hourMask()" size="2" placeholder="00" >:
-  	<input id="minutesInput" type="text" name="minutes" class="timeText" ng-model="timerDisplay.inputMinutes" ng-change="minuteMask()" size="2" placeholder="00">:
-  	<input id="secondsInput" type="text" name="seconds" class="timeText" ng-model="timerDisplay.inputSeconds" ng-change="secondMask()" size="2" placeholder="00">
+  <div id="topButtons">
+	  <span style="width:50%"><input type="button" value="set" ng-show="!timerDisplay.editorActive" ng-click="setEditorActive()"></span>
+	  <span style="width:50%"><input type="button" value="start" ng-show="timerDisplay.editorActive" ng-click="startTimerFromEditor()"></span>
+  </div>
+  <div id="timeRemaining" class="timerText whiteText" ng-show="!timerDisplay.editorActive" >{{timerDisplay.timeRemaining}}</div>
+  <div id="editor" ng-show="timerDisplay.editorActive" class=" whiteText">
+	  <input id="hoursInput" type="text" name="hours" class="timeSetText" ng-model="timerDisplay.inputHours" ng-change="hourMask()" size="2" placeholder="00" >
+	  <span>:</span>
+  	<input id="minutesInput" type="text" name="minutes" class="timeSetText" ng-model="timerDisplay.inputMinutes" ng-change="minuteMask()" size="2" placeholder="00">
+	:
+  	<input id="secondsInput" type="text" name="seconds"  class="timeSetText" ng-model="timerDisplay.inputSeconds" ng-change="secondMask()" size="2" placeholder="00">
   </div>
   </div>
 
 	<!--todo make this a start/stop toggle -->
-  <div>
-  	<!--<input type="button" value="pomodoro" ng-click="startPomodoro">-->
-  	<input type="button" value="set" ng-click="setEditorActive()">
-  	<input type="button" value="start" ng-click="startTimerFromEditor()">
-  	<input type="button" value="pause" ng-click="pause()">
-  	<input type="button" value="resume" ng-click="resume()">
+  <div id="bottomButtons">
+	  <input type="button" value="pause" ng-click="pause()" >
+	  <input type="button" value="resume" ng-click="resume()" >
   </div>
   <div class="greenRow">&nbsp</div>
-  <div class="quarterWidth">completed timers:</div>
-  <div id="completed" class="quarterWidth">
+  <div id="completed" class="quarterWidth ">
 	  <div class="completed"  ng-repeat="completedTime in completedTimes">
-		  <div ng-class-odd="'greenRow'" ng-class-even="'greyRow'">
-			  <span>{{completedTime.time}}</span>
-			  <span> at </span>
-			  <span>{{completedTime.at}}</span>
+		  <div ng-class-even="'greenRow'" ng-class-odd="'tomato'" class="transWhiteBorder whiteText" >
+			  <span  class="floatL">{{completedTime.at}}</span>
+			  <span  >{{completedTime.time}}</span>
 		  </div>
 	  </div>
   </div>

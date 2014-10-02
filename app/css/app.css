@@ -1,8 +1,19 @@
 /* app css stylesheet */
 
+html {
+  /*background-image:url("images/800px-Tomato_scanned.jpg");*/
+  background-image:url("images/800px-Green_Tomatoes.jpg");
+  background-size: cover;
+  font-size:100%;
+}
+
+#mainLabel {
+	font-size:1.5em;
+}
+
 html,
 input {
-  font-family:aleoregular,Verdana, Geneva, "DejaVu Sans", sans-serif;
+  font-family:ralewaybold,Verdana, Geneva, "DejaVu Sans", sans-serif;
   text-align:center;
   vertical-align:middle;
   -moz-border-radius:.25em;
@@ -12,12 +23,12 @@ input {
 
 input[type="button"],input[type="submit"] {
   color:#E5FFE5;
-  background-color:#007500;
+  background-color:rgba(0, 110, 0, .5);
   border:1px solid;
   border-color:#B5FFB5;
   display:inline-block;
   padding: 5px 10px;
-  font-size: 120%;
+  font-size: 1.2em;
 }
 
 input[type="button"]:hover,input[type="submit"]:hover{
@@ -30,19 +41,21 @@ input[type="button"]:active,input[type="submit"]:active{
   top:2px;
 }
 
-input.timeText{
-	font-size:200%;
+.timeSetText {
+  font-family:ubuntu_monobold, "DejaVu Sans Mono", Menlo, Consolas, "Liberation Mono", Monaco, "Lucida Console", monospace;
+  font-size:3.25em;
+  background-color:rgba(0, 110, 0, .5);
+  border-color:rgba(225, 225,225 , 0);
 }
 
 .timerText {
-  font-family:aleobold,Verdana, Geneva, "DejaVu Sans", sans-serif;
-  font-size:250%;
+  font-family:ubuntu_monobold, "DejaVu Sans Mono", Menlo, Consolas, "Liberation Mono", Monaco, "Lucida Console", monospace;
+  font-size:3.25em;
 }
 
 .menu,
 .tomato {
-  background-color:#F0B2B2;
-  /*background-color:#FF7373;*/
+  background-color: rgba(236, 32, 73, 0.2);
 }
 
 .menu {
@@ -74,16 +87,8 @@ input.timeText{
   padding: 0;
 }
 
-div title {
-  color:limegreen;
-}
-
 .greenRow {
-  background-color:limegreen;
-}
-
-.greyRow {
-  background-color:#b3b3b3;
+  background-color: rgba(46, 209, 73, 0.3);
 }
 
 .quarterWidth {
@@ -91,6 +96,29 @@ div title {
 	margin: 0 auto;
 	/*display:flex;*/
 	justify-content:center;
+}
+
+.floatL {
+	float:left;
+}
+
+.floatR {
+	float:right;
+}
+
+.completed {
+	font-size:1.5em;
+}
+
+.transWhiteBorder {
+	border-color:rgba(226, 226, 226, 0.4);
+	border-style:solid;
+	border-width:3px;
+}
+
+.whiteText {
+  color:rgba(255, 255, 255, 0.8);
+  /*text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;*/
 }
 
 

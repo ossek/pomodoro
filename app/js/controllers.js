@@ -75,9 +75,9 @@ define(['angular','services','timey','parameterCheck'],function(angular,services
 	   return;
 	 }
 	 //clear inputs
-	 $scope.timerDisplay.inputHours = 0;
-	 $scope.timerDisplay.inputMinutes = 0;
-	 $scope.timerDisplay.inputSeconds = 0;
+	 $scope.timerDisplay.inputHours = "00";
+	 $scope.timerDisplay.inputMinutes = "00";
+	 $scope.timerDisplay.inputSeconds = "00";
 	 timer.startTimer(inputMillis);
       };
 
