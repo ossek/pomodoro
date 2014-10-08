@@ -1,31 +1,62 @@
-<div>
-<div id="timerFace" >
-  <div id="topButtons">
-	  <span style="width:50%"><input type="button" value="set" ng-show="!timerDisplay.editorActive" ng-click="setEditorActive()"></span>
-	  <span style="width:50%"><input type="button" value="start" ng-show="timerDisplay.editorActive" ng-click="startTimerFromEditor()"></span>
+<div class="page liquid">
+  <div class="unit size1of5"/>
+    &nbsp;
   </div>
-  <div id="timeRemaining" class="timerText whiteText" ng-show="!timerDisplay.editorActive" >{{timerDisplay.timeRemaining}}</div>
-  <div id="editor" ng-show="timerDisplay.editorActive" class=" whiteText">
-	  <input id="hoursInput" type="text" name="hours" class="timeSetText" ng-model="timerDisplay.inputHours" ng-change="hourMask()" size="2" placeholder="00" >
-	  <span>:</span>
-  	<input id="minutesInput" type="text" name="minutes" class="timeSetText" ng-model="timerDisplay.inputMinutes" ng-change="minuteMask()" size="2" placeholder="00">
-	:
-  	<input id="secondsInput" type="text" name="seconds"  class="timeSetText" ng-model="timerDisplay.inputSeconds" ng-change="secondMask()" size="2" placeholder="00">
+  <div class="unit size1of5"/>
+    &nbsp;
   </div>
+  <div class="unit size1of5"/>
+    <div class="line timer_btn_container">
+	  <input type="button" class="btn timer_btn" value="set" ng-show="!timerDisplay.editorActive" ng-click="setEditorActive()">
+	  <input type="button" class="btn timer_btn" value="start" ng-show="timerDisplay.editorActive" ng-click="startTimerFromEditor()">
+    </div>
+    <div class="line">
+	    &nbsp;
+    </div>
+    <div class="line timerContainer">
+      <div id="timeRemaining" class="timerText" ng-show="!timerDisplay.editorActive" >{{timerDisplay.timeRemaining}}</div>
+      <div id="editor" ng-show="timerDisplay.editorActive" class="timerEditor">
+        <input id="hoursInput" type="text" name="hours" class="timeSetText" ng-model="timerDisplay.inputHours" ng-change="hourMask()" size="2" placeholder="00" >
+	<span>:</span> 
+      	<input id="minutesInput" type="text" name="minutes" class="timeSetText" ng-model="timerDisplay.inputMinutes" ng-change="minuteMask()" size="2" placeholder="00">
+        <span>:</span>
+      	<input id="secondsInput" type="text" name="seconds"  class="timeSetText" ng-model="timerDisplay.inputSeconds" ng-change="secondMask()" size="2" placeholder="00">
+      </div>
+    </div>
+    <div class="line"> &nbsp; </div>
+    <div class="line">
+      <div class="unit size1of2"/>
+        <div class="timer_btn_container">
+          <input type="button" class="btn timer_btn" value="pause" ng-click="pause()" >
+        </div>
+      </div>
+      <div class="unit size1of2 last"/>
+        <div class="timer_btn_container">
+          <input type="button" class="btn timer_btn" value="resume" ng-click="resume()" >
+        </div>
+      </div>
+    </div>
+    <div class="line"> &nbsp; </div>
+    <div class="line">
+        <div id="completed" class="completionsContainer" >
+		<div class="completion line">
+	          <div class="unit size1of2 completedTimeContainer">finished:</div>
+	          <div class="unit size1of2">at:</div>
+	        </div>
+                <div  ng-repeat="completedTime in completedTimes">
+              	  <div ng-class-even="'evenRow'" ng-class-odd="'oddRow'" class="completion line" >
+              	    <div class="unit size1of2 completedTimeContainer">{{completedTime.time}}</div>
+              	    <div class="unit size1of2 last">{{completedTime.at}}</div>
+              	  </div>
+                </div>
+        </div>
+    </div>
+    <!-- ng repeated lines -->
   </div>
-
-	<!--todo make this a start/stop toggle -->
-  <div id="bottomButtons">
-	  <input type="button" value="pause" ng-click="pause()" >
-	  <input type="button" value="resume" ng-click="resume()" >
+  <div class="unit size1of5"/>
+    &nbsp;
   </div>
-  <div class="greenRow">&nbsp</div>
-  <div id="completed" class="quarterWidth ">
-	  <div class="completed"  ng-repeat="completedTime in completedTimes">
-		  <div ng-class-even="'greenRow'" ng-class-odd="'tomato'" class="transWhiteBorder whiteText" >
-			  <span  class="floatL">{{completedTime.at}}</span>
-			  <span  >{{completedTime.time}}</span>
-		  </div>
-	  </div>
+  <div class="unit size1of5 last"/>
+    &nbsp;
   </div>
 </div>

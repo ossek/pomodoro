@@ -20,13 +20,14 @@
     "test",
     "tests"
   ],
-  "_release": "ac7e45b260",
+  "_release": "a8f54a5f9f",
   "_resolution": {
     "type": "branch",
     "branch": "master",
-    "commit": "ac7e45b2600d8a9830e421049fc087d44c3635bb"
+    "commit": "a8f54a5f9f95c7c750dc96b9a89aed062ee9ef0d"
   },
-  "_source": "/projects/timeywimey",
+  "_source": "/home/ossek/projects/timey",
   "_target": "*",
-  "_originalSource": "../timeywimey/"
+  "_originalSource": "../timey/",
+  "_direct": true
 }
