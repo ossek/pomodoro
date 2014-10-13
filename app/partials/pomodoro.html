@@ -5,7 +5,7 @@
   <div class="unit size1of5"/>
     &nbsp;
   </div>
-  <div class="unit size1of5"/>
+  <div class="unit size1of5 timerColumn"/>
     <div class="line timer_btn_container">
 	  <input type="button" class="btn timer_btn" value="set" ng-show="!timerDisplay.editorActive" ng-click="setEditorActive()">
 	  <input type="button" class="btn timer_btn" value="start" ng-show="timerDisplay.editorActive" ng-click="startTimerFromEditor()">
@@ -14,13 +14,19 @@
 	    &nbsp;
     </div>
     <div class="line timerContainer">
-      <div id="timeRemaining" class="timerText" ng-show="!timerDisplay.editorActive" >{{timerDisplay.timeRemaining}}</div>
-      <div id="editor" ng-show="timerDisplay.editorActive" class="timerEditor">
-        <input id="hoursInput" type="text" name="hours" class="timeSetText" ng-model="timerDisplay.inputHours" ng-change="hourMask()" size="2" placeholder="00" >
-	<span>:</span> 
-      	<input id="minutesInput" type="text" name="minutes" class="timeSetText" ng-model="timerDisplay.inputMinutes" ng-change="minuteMask()" size="2" placeholder="00">
-        <span>:</span>
-      	<input id="secondsInput" type="text" name="seconds"  class="timeSetText" ng-model="timerDisplay.inputSeconds" ng-change="secondMask()" size="2" placeholder="00">
+      <div class="timerDisplay" ng-show="!timerDisplay.editorActive" >
+	  <input id="hoursInput" type="text" name="hours" class="timeSetInput" disabled="true" ng-model="timerDisplay.timeRemaining.hour"  size="2" >
+	  <div class="timerText ">:</div> 
+	  <input id="hoursInput" type="text" name="hours" class="timeSetInput" disabled="true" ng-model="timerDisplay.timeRemaining.minute"  size="2" >
+	  <div class="timerText ">:</div> 
+	  <input id="hoursInput" type="text" name="hours" class="timeSetInput" disabled="true" ng-model="timerDisplay.timeRemaining.second"  size="2" >
+      </div>
+      <div ng-show="timerDisplay.editorActive" class="timerEditor">
+	  <input id="hoursInput" type="text" name="hours" class="timeSetInput" ng-model="timerDisplay.inputHours" ng-change="hourMask()" size="2" placeholder="00" >
+	  <div class="timerText ">:</div> 
+	  <input id="minutesInput" type="text" name="minutes" class="timeSetInput" ng-model="timerDisplay.inputMinutes" ng-change="minuteMask()" size="2" placeholder="00">
+          <div class="timerText ">:</div>
+	  <input id="secondsInput" type="text" name="seconds" class="timeSetInput" ng-model="timerDisplay.inputSeconds" ng-change="secondMask()" size="2" placeholder="00">
       </div>
     </div>
     <div class="line"> &nbsp; </div>

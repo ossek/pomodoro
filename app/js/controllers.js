@@ -14,8 +14,12 @@ define(['angular','services','timey','parameterCheck'],function(angular,services
       console.log(timer);
 
       $scope.timerDisplay = {
-	      timeRemaining : "00:00:00",
               editorActive : false,
+              timeRemaining : {
+		      hour:'00',
+		      minute:'00',
+		      second:'00',
+	      }
       };
 
       $scope.completedTimes = [];
@@ -61,7 +65,10 @@ define(['angular','services','timey','parameterCheck'],function(angular,services
 
       //update the display frequently
       $interval(function(){
-      	$scope.timerDisplay.timeRemaining = timer.getHourMinuteSecondRemainString();
+      	//$scope.timerDisplay.timeRemaining = timer.getHourMinuteSecondRemainString();
+	var t = timer.getPaddedHourMinuteSecondObj(timer.getTimeRemainingMillis());
+	console.log('t ' + t);
+      	$scope.timerDisplay.timeRemaining = timer.getPaddedHourMinuteSecondObj(timer.getTimeRemainingMillis());
       },20,0,true);
 
 
