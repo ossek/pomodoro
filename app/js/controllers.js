@@ -1,20 +1,16 @@
 define(['angular','services','timey','parameterCheck'],function(angular,services,timey,parameterCheck){
   'use strict';
-  /* Controllers */
-  var TWENTY_FIVE_IN_MILLIS_EPOCH = 1500000;
-  var FIVE_IN_MILLIS_EPOCH = 300000;
-  var TEN_IN_MILLIS_EPOCH = 600000;
-  
   var pomodoroControllers = angular.module('pomodoro.controllers', ['pomodoro.services']);
   
   pomodoroControllers.controller('pomodoroCtrl', ['$scope','$routeParams','$interval',
-     //TODO make this an async function
     function($scope,$routeParams,$interval){
       var timer = Object.create(timey);
-      console.log(timer);
+      var TWENTY_FIVE_IN_MILLIS_EPOCH = 1500000;
 
       $scope.timerDisplay = {
-              editorActive : false,
+              pauseAvailable : false,
+              resumeAvailable : false,
+              editorActive : false, //start is available when this value is true, set is available when it is false
               timeRemaining : {
 		      hour:'00',
 		      minute:'00',
@@ -22,75 +18,40 @@ define(['angular','services','timey','parameterCheck'],function(angular,services
 	      }
       };
 
+      $scope.clickStart = function(){
+	      startTimer();
+	      setPauseAvailable();
+	      setResumeUnavailable();
+	      setEditorInactive();
+      };
+
+      $scope.clickSet = function(){
+	      timer.reset();
+	      setPauseUnavailable();
+	      setResumeUnavailable();
+	      setEditorActive();
+      };
+
+      $scope.clickPause = function(){
+	      timer.pause();
+	      setPauseUnavailable();
+	      setResumeAvailable();
+	      setEditorInactive();
+      };
+
+      $scope.clickResume = function(){
+	      timer.resume();
+	      setPauseAvailable();
+	      setResumeUnavailable();
+	      setEditorInactive();
+      };
+
       $scope.completedTimes = [];
 
-      //controller interface internals
-      var getMillisFromInput = function(inputHours,inputMins,inputSecs){
-	      var hoursMillis = 0;
-	      var minuteMillis = 0;
-	      var secMillis = 0;
-	      if(!(inputHours === null || inputHours === undefined)){
-		      hoursMillis = inputHours*60*60*1000;
-	      }
-	      if(!(inputMins === null || inputMins === undefined)){
-		      minuteMillis = inputMins*60*1000;
-	      }
-	      if(!(inputSecs === null || inputSecs === undefined)){
-		      secMillis = inputSecs*1000;
-	      }
-	      return hoursMillis + minuteMillis + secMillis;
-      };
-
-      var setEditorInactive = function(){
-	      $scope.timerDisplay.editorActive = false;
-      };
-
-      var twoDigits = function(inputDigits){
-          return parseInt(inputDigits.toString().substring(0,2));
-      };
-
-      var nullOrUndefined = function(value){
-	      return value === null || value === undefined;
-      };
-
-      var addCompleted = function(timerFinishedEventObj){
-	      if(timerFinishedEventObj.completedCountdownMillis >= 1000){
-	        $scope.completedTimes.push({
-	                time : timer.getHourMinuteSecondString(timerFinishedEventObj.completedCountdownMillis),
-	                at : timer.getLocalTimeString(timerFinishedEventObj.finishedAt),
-	        });
-	      }
-      };
-      timer.registerObserver(addCompleted);
-
-      //update the display frequently
-      $interval(function(){
-      	//$scope.timerDisplay.timeRemaining = timer.getHourMinuteSecondRemainString();
-	var t = timer.getPaddedHourMinuteSecondObj(timer.getTimeRemainingMillis());
-	console.log('t ' + t);
-      	$scope.timerDisplay.timeRemaining = timer.getPaddedHourMinuteSecondObj(timer.getTimeRemainingMillis());
-      },20,0,true);
-
-
-      //controller interface
-      $scope.startTimer = function(){
-         var inputMillis = getMillisFromInput($scope.timerDisplay.inputHours,
-			 $scope.timerDisplay.inputMinutes,
-			 $scope.timerDisplay.inputSeconds);
-	 if(inputMillis === null){
-           timer.startTimer(TWENTY_FIVE_IN_MILLIS_EPOCH);
-	   return;
-	 }
-	 //clear inputs
-	 $scope.timerDisplay.inputHours = "00";
-	 $scope.timerDisplay.inputMinutes = "00";
-	 $scope.timerDisplay.inputSeconds = "00";
-	 timer.startTimer(inputMillis);
-      };
-
-      $scope.startTimerFromEditor = function(){
-	      $scope.startTimer();
-	      setEditorInactive();
+      $scope.showCompletedTimes = function(){
+	      return (!($scope.completedTimes.length === null || 
+			      $scope.completedTimes === undefined) && 
+			      $scope.completedTimes.length > 0);
       };
 
       $scope.hourMask = function(){
@@ -132,30 +93,88 @@ define(['angular','services','timey','parameterCheck'],function(angular,services
 	      }
       };
 
-      $scope.setEditorActive = function(){
+      function getMillisFromInput(inputHours,inputMins,inputSecs){
+	      var hoursMillis = 0;
+	      var minuteMillis = 0;
+	      var secMillis = 0;
+	      if(!(inputHours === null || inputHours === undefined)){
+		      hoursMillis = inputHours*60*60*1000;
+	      }
+	      if(!(inputMins === null || inputMins === undefined)){
+		      minuteMillis = inputMins*60*1000;
+	      }
+	      if(!(inputSecs === null || inputSecs === undefined)){
+		      secMillis = inputSecs*1000;
+	      }
+	      return hoursMillis + minuteMillis + secMillis;
+      }
+
+      function setEditorInactive(){
+	      $scope.timerDisplay.editorActive = false;
+      }
+
+      function setEditorActive(){
 	      $scope.timerDisplay.editorActive = true;
-      };
+      }
 
-      $scope.reset = function(){
-        timer.reset();
-      };
+      function setPauseAvailable(){
+	      $scope.timerDisplay.pauseAvailable = true;
+      }
 
-      $scope.pause = function(){
-	      timer.pause();
-      };
+      function setPauseUnavailable(){
+	      $scope.timerDisplay.pauseAvailable = false;
+      }
 
-      $scope.resume = function(){
-	      timer.resume();
-      };
-    
-      $scope.shortBreak = function(){
-        timer.startTimer(FIVE_IN_MILLIS_EPOCH);
-      };
-    
-      $scope.longBreak = function(){
-        timer.startTimer(TEN_IN_MILLIS_EPOCH);
-      };
+      function setResumeAvailable(){
+	      $scope.timerDisplay.resumeAvailable = true;
+      }
 
+      function setResumeUnavailable(){
+	      $scope.timerDisplay.resumeAvailable = false;
+      }
+      
+      function twoDigits(inputDigits){
+          return parseInt(inputDigits.toString().substring(0,2));
+      }
+
+      function nullOrUndefined(value){
+	      return value === null || value === undefined;
+      }
+
+      function addCompleted(timerFinishedEventObj){
+	      if(timerFinishedEventObj.completedCountdownMillis >= 1000){
+	        $scope.completedTimes.push({
+	                time : timer.getHourMinuteSecondString(timerFinishedEventObj.completedCountdownMillis),
+	                at : timer.getLocalTimeString(timerFinishedEventObj.finishedAt),
+	        });
+	      }
+	      setPauseUnavailable();
+	      setResumeUnavailable();
+	      setEditorInactive();
+      }
+
+      timer.registerObserver(addCompleted);
+
+      //update the display frequently
+      $interval(function(){
+      	$scope.timerDisplay.timeRemaining = timer.getPaddedHourMinuteSecondObj(timer.getTimeRemainingMillis());
+      },20,0,true);
+
+      function startTimer(){
+         var inputMillis = getMillisFromInput($scope.timerDisplay.inputHours,
+			 $scope.timerDisplay.inputMinutes,
+			 $scope.timerDisplay.inputSeconds);
+	 if(inputMillis === null){
+           timer.startTimer(TWENTY_FIVE_IN_MILLIS_EPOCH);
+	   return;
+	 }
+	 //clear inputs
+	 $scope.timerDisplay.inputHours = "00";
+	 $scope.timerDisplay.inputMinutes = "00";
+	 $scope.timerDisplay.inputSeconds = "00";
+	 timer.startTimer(inputMillis);
+      }
+      
     }]);
 
     return pomodoroControllers;

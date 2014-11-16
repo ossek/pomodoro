@@ -1,68 +1,64 @@
-<div class="page liquid">
-  <div class="unit size1of5"/>
-    &nbsp;
+<div class="pure-g">
+  <div class="pure-u-1"/>
+	  <div><p>&nbsp;</p></div>
   </div>
-  <div class="unit size1of5"/>
-    &nbsp;
-  </div>
-  <div class="unit size1of5 timerColumn"/>
-    <div class="line timer_btn_container">
-	  <input type="button" class="btn timer_btn" value="set" ng-show="!timerDisplay.editorActive" ng-click="setEditorActive()">
-	  <input type="button" class="btn timer_btn" value="start" ng-show="timerDisplay.editorActive" ng-click="startTimerFromEditor()">
+  <div class="pure-u-1 timerColumn"/>
+    <div class="pure-u-content timer_btn_container">
+	    <button class="timer_btn set_btn" ng-show="!timerDisplay.editorActive" ng-click="clickSet()">set</button>
+	    <button class="timer_btn start_btn" ng-show="timerDisplay.editorActive" ng-click="clickStart()">start</button>
     </div>
-    <div class="line">
-	    &nbsp;
+    <div class="pure-g timerContainer">
+	    <div class="pure-u-1">
+		    <div class="pure-u-content">
+	               <div class="timerDisplay" ng-show="!timerDisplay.editorActive">
+                              <input id="hoursInput" type="text" class="digitDisplay timeDisplayInput" disabled="true" ng-model="timerDisplay.timeRemaining.hour"  size="2" >
+                              <span class="digitDisplay">:</span> 
+                              <input id="hoursInput" type="text" class="digitDisplay timeDisplayInput" disabled="true" ng-model="timerDisplay.timeRemaining.minute"  size="2" >
+                              <div class="timerText ">:</div> 
+                              <input id="hoursInput" type="text" class="digitDisplay timeDisplayInput" disabled="true" ng-model="timerDisplay.timeRemaining.second"  size="2" >
+                          </div>
+                          <div class="timerEditor" ng-show="timerDisplay.editorActive">
+                              <input id="hoursInput" type="text" name="hours" class="digitDisplay timeSetInput" ng-model="timerDisplay.inputHours" ng-change="hourMask()" size="2" placeholder="00" >
+                              <div class="timerText ">:</div> 
+                              <input id="minutesInput" type="text" name="minutes" class="digitDisplay timeSetInput" ng-model="timerDisplay.inputMinutes" ng-change="minuteMask()" size="2" placeholder="00">
+                              <div class="timerText ">:</div>
+                              <input id="secondsInput" type="text" name="seconds" class="digitDisplay timeSetInput" ng-model="timerDisplay.inputSeconds" ng-change="secondMask()" size="2" placeholder="00">          
+	                  </div>
+	             </div>
+           </div>
     </div>
-    <div class="line timerContainer">
-      <div class="timerDisplay" ng-show="!timerDisplay.editorActive" >
-	  <input id="hoursInput" type="text" name="hours" class="timeSetInput" disabled="true" ng-model="timerDisplay.timeRemaining.hour"  size="2" >
-	  <div class="timerText ">:</div> 
-	  <input id="hoursInput" type="text" name="hours" class="timeSetInput" disabled="true" ng-model="timerDisplay.timeRemaining.minute"  size="2" >
-	  <div class="timerText ">:</div> 
-	  <input id="hoursInput" type="text" name="hours" class="timeSetInput" disabled="true" ng-model="timerDisplay.timeRemaining.second"  size="2" >
-      </div>
-      <div ng-show="timerDisplay.editorActive" class="timerEditor">
-	  <input id="hoursInput" type="text" name="hours" class="timeSetInput" ng-model="timerDisplay.inputHours" ng-change="hourMask()" size="2" placeholder="00" >
-	  <div class="timerText ">:</div> 
-	  <input id="minutesInput" type="text" name="minutes" class="timeSetInput" ng-model="timerDisplay.inputMinutes" ng-change="minuteMask()" size="2" placeholder="00">
-          <div class="timerText ">:</div>
-	  <input id="secondsInput" type="text" name="seconds" class="timeSetInput" ng-model="timerDisplay.inputSeconds" ng-change="secondMask()" size="2" placeholder="00">
-      </div>
-    </div>
-    <div class="line"> &nbsp; </div>
-    <div class="line">
-      <div class="unit size1of2"/>
-        <div class="timer_btn_container">
-          <input type="button" class="btn timer_btn" value="pause" ng-click="pause()" >
-        </div>
-      </div>
-      <div class="unit size1of2 last"/>
-        <div class="timer_btn_container">
-          <input type="button" class="btn timer_btn" value="resume" ng-click="resume()" >
+    <div class="pure-g">
+      <div class="pure-u-1"/>
+        <div class="pure-u-content timer_btn_container">
+          <input type="button" class="btn timer_btn resume_btn" value="resume" ng-show="timerDisplay.resumeAvailable" ng-click="clickResume()" >
+          <input type="button" class="btn timer_btn pause_btn" value="pause" ng-show="timerDisplay.pauseAvailable" ng-click="clickPause()" >
+          <input type="button" class="btn timer_btn" style="visibility:hidden;" ng-show="!timerDisplay.resumeAvailable && !timerDisplay.pauseAvailable">
         </div>
       </div>
     </div>
-    <div class="line"> &nbsp; </div>
-    <div class="line">
-        <div id="completed" class="completionsContainer" >
-		<div class="completion line">
-	          <div class="unit size1of2 completedTimeContainer">finished:</div>
-	          <div class="unit size1of2">at:</div>
+    <div class="pure-g"> &nbsp; </div>
+    <div class="pure-g">
+        <div id="completed" class="pure-u-1 completionsContainer" ng-show="showCompletedTimes()" >
+		<div class="pure-u-content completion">
+		  <div class="pure-g">
+			  <div class="pure-u-1-2"><div class="pure-u-content">finished:</div></div>
+			  <div class="pure-u-1-2"><div class="pure-u-content">at time:</div></div>
+		  </div>
 	        </div>
                 <div  ng-repeat="completedTime in completedTimes">
-              	  <div ng-class-even="'evenRow'" ng-class-odd="'oddRow'" class="completion line" >
-              	    <div class="unit size1of2 completedTimeContainer">{{completedTime.time}}</div>
-              	    <div class="unit size1of2 last">{{completedTime.at}}</div>
+              	  <div class="completion pure-g" ng-class-even="'evenRow'" ng-class-odd="'oddRow'">
+		    <div class="pure-u-1-2"><div class="pure-u-content completedTimeContainer">{{completedTime.time}}</div></div>
+              	    <div class="pure-u-1-2"><div class="pure-u-content completedTimeContainer">{{completedTime.at}}</div></div>
               	  </div>
                 </div>
         </div>
     </div>
-    <!-- ng repeated lines -->
+    <!-- ng repeated pure-gs -->
   </div>
-  <div class="unit size1of5"/>
+  <div class="pure-u-1"/>
     &nbsp;
   </div>
-  <div class="unit size1of5 last"/>
+  <div class="pure-u-1 last"/>
     &nbsp;
   </div>
 </div>

@@ -11,6 +11,7 @@
     "karma-jasmine" : "~0.1",
     "karma-ng-scenario" : "~0.1",
     "jasmine-core" : "~2.0",
-    "grunt" : "~0.4.2"
+    "grunt" : "~0.4.2",
+    "jsctags": "git://github.com/ramitos/jsctags.git"
   }
 }
