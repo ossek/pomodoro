@@ -7,10 +7,10 @@
   padding:0 4px 0 4px;
 }
 
-.timerColumn {
+/*.timerColumn {
 	min-width:300px;
 	max-width:380px;
-}
+}*/
 
 .timer_btn_container > .timer_btn {
   font-family:ralewaybold,Verdana, Geneva, "DejaVu Sans", sans-serif;
