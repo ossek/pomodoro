@@ -7,6 +7,10 @@ define(['angular','services','timey','parameterCheck','timbre'],function(angular
       var timer = Object.create(timey);
       var TWENTY_FIVE_IN_MILLIS_EPOCH = 1500000;
       var pluckA = timbre('pluck',{freq:440,mul:1.0});
+      var pluckC = timbre('pluck',{freq:261.626,mul:1.0});
+      var pluckE = timbre('pluck',{freq:391.995,mul:1.0});
+      var pluckG = timbre('pluck',{freq:329.628,mul:1.0});
+
 
       $scope.timerDisplay = {
               pauseAvailable : false,
@@ -148,7 +152,9 @@ define(['angular','services','timey','parameterCheck','timbre'],function(angular
 	                time : timer.getHourMinuteSecondString(timerFinishedEventObj.completedCountdownMillis),
 	                at : timer.getLocalTimeString(timerFinishedEventObj.finishedAt),
 	        });
-                pluckA.bang().play();
+                pluckC.bang().play();
+                pluckE.bang().play();
+                pluckG.bang().play();
 	      }
 	      setPauseUnavailable();
 	      setResumeUnavailable();
