@@ -4,7 +4,8 @@ require.config({
     paths: {
 	angular : '../lib/angular/angular',
 	angularRoute : '../lib/angular/angular-route',
-	timey: '../../bower_components/timeywimey/js/timey'
+	timey: '../../bower_components/timeywimey/js/timey',
+        timbre : '../../js_dependency/timbre'
 	//angularMocks
 	//text
     },
@@ -18,6 +19,9 @@ shim:{
       'angularRoute' : {
   	  'exports' : 'angularRoute',
 	  deps: ['angular']
+      },
+      'timbre' : {
+          'exports':'timbre'
       }
     },
 

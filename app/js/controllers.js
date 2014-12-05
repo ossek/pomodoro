@@ -1,4 +1,4 @@
-define(['angular','services','timey','parameterCheck'],function(angular,services,timey,parameterCheck){
+define(['angular','services','timey','parameterCheck','timbre'],function(angular,services,timey,parameterCheck,timbre){
   'use strict';
   var pomodoroControllers = angular.module('pomodoro.controllers', ['pomodoro.services']);
   
@@ -6,6 +6,7 @@ define(['angular','services','timey','parameterCheck'],function(angular,services
     function($scope,$routeParams,$interval){
       var timer = Object.create(timey);
       var TWENTY_FIVE_IN_MILLIS_EPOCH = 1500000;
+      var pluckA = timbre('pluck',{freq:440,mul:1.0});
 
       $scope.timerDisplay = {
               pauseAvailable : false,
@@ -147,6 +148,7 @@ define(['angular','services','timey','parameterCheck'],function(angular,services
 	                time : timer.getHourMinuteSecondString(timerFinishedEventObj.completedCountdownMillis),
 	                at : timer.getLocalTimeString(timerFinishedEventObj.finishedAt),
 	        });
+                pluckA.bang().play();
 	      }
 	      setPauseUnavailable();
 	      setResumeUnavailable();
